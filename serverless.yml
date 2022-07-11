@@ -1,0 +1,65 @@
+service: activity
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  timeout: 10
+  region: sa-east-1
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+functions:
+  # Activities function
+  listActivities:
+    handler: activityRouter.getAllActivities
+    events:
+      - httpApi:
+          path: /courses/{cursoId}/activities
+          method: get
+
+  createActivity:
+    handler: activityRouter.addActivity
+    events:
+      - httpApi:
+          path: /courses/{cursoId}/new-activity
+          method: post
+
+  updateActivity:
+    handler: activityRouter.updateActivity
+    events:
+      - httpApi:
+          path: /courses/{cursoId}/activity/{actividadId}
+          method: put
+
+  deleteActivity:
+    handler: activityRouter.deleteActivity
+    events:
+      - httpApi:
+          path: /courses/{cursoId}/activity/{actividadId}
+          method: delete
+
+  getActivityByCourseId:
+    handler: activityRouter.getActivitiesByCourseId
+    events:
+      - httpApi:
+          path: /courses/{cursoId}/activities/{actividadId}
+          method: get
+
+  # Comments function
+  getCommentsActId:
+    handler: activityRouter.getCommentsByActivityId
+    events:
+      - httpApi:
+          path: /courses/{cursosId}/activity/{actividadId}/comments
+          method: get
+
+  addComment:
+    handler: activityRouter.addComment
+    events:
+      - httpApi:
+          path: /courses/{cursosId}/activity/{actividadId}/comments
+          method: post
