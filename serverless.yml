@@ -14,52 +14,60 @@ plugins:
 
 functions:
   # Activities function
-  listActivities:
-    handler: activityRouter.getAllActivities
+  # listActivities:
+  #   handler: activityRouter.getAllActivities
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursoId}/activities
+  #         method: get
+
+  # createActivity:
+  #   handler: activityRouter.addActivity
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursoId}/new-activity
+  #         method: post
+
+  # updateActivity:
+  #   handler: activityRouter.updateActivity
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursoId}/activity/{actividadId}
+  #         method: put
+
+  # deleteActivity:
+  #   handler: activityRouter.deleteActivity
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursoId}/activity/{actividadId}
+  #         method: delete
+
+  # getActivityByCourseId:
+  #   handler: activityRouter.getActivitiesByCourseId
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursoId}/activities/{actividadId}
+  #         method: get
+
+  # # Comments function
+  # getCommentsActId:
+  #   handler: activityRouter.getCommentsByActivityId
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursosId}/activity/{actividadId}/comments
+  #         method: get
+
+  # addComment:
+  #   handler: activityRouter.addComment
+  #   events:
+  #     - httpApi:
+  #         path: /courses/{cursosId}/activity/{actividadId}/comments
+  #         method: post
+
+  # questions function
+  getQuestions:
+    handler: ./router/questionRouter.getAllQuestions
     events:
       - httpApi:
-          path: /courses/{cursoId}/activities
+          path: /questions
           method: get
-
-  createActivity:
-    handler: activityRouter.addActivity
-    events:
-      - httpApi:
-          path: /courses/{cursoId}/new-activity
-          method: post
-
-  updateActivity:
-    handler: activityRouter.updateActivity
-    events:
-      - httpApi:
-          path: /courses/{cursoId}/activity/{actividadId}
-          method: put
-
-  deleteActivity:
-    handler: activityRouter.deleteActivity
-    events:
-      - httpApi:
-          path: /courses/{cursoId}/activity/{actividadId}
-          method: delete
-
-  getActivityByCourseId:
-    handler: activityRouter.getActivitiesByCourseId
-    events:
-      - httpApi:
-          path: /courses/{cursoId}/activities/{actividadId}
-          method: get
-
-  # Comments function
-  getCommentsActId:
-    handler: activityRouter.getCommentsByActivityId
-    events:
-      - httpApi:
-          path: /courses/{cursosId}/activity/{actividadId}/comments
-          method: get
-
-  addComment:
-    handler: activityRouter.addComment
-    events:
-      - httpApi:
-          path: /courses/{cursosId}/activity/{actividadId}/comments
-          method: post
