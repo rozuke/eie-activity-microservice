@@ -2,7 +2,7 @@ const { sequelize } = require("../sequelize");
 const { DataTypes } = require("sequelize");
 
 const LabelTypeSchema = sequelize.define(
-  "TipoEtiqueta",
+  "tipoEtiqueta",
   {
     tipoEtiquetaId: {
       allowNull: false,
@@ -21,6 +21,7 @@ const LabelTypeSchema = sequelize.define(
   {
     timestamps: false,
     freezeTableName: true,
+    tableName: "TipoEtiqueta",
   }
 );
 

@@ -2,6 +2,7 @@ const { QuestionSchema } = require("../models/questionModel.js");
 const { AttachedSchema } = require("../models/attachedModel.js");
 const { LabelSchema } = require("../models/labelModel.js");
 const { QuestionTypeSchema } = require("../models/questionTypeModel.js");
+const { BookSchema } = require("../models/bookModel.js");
 require("../models/asociation.js");
 class QuestionService {
   async findAllQuestions() {
@@ -12,6 +13,9 @@ class QuestionService {
   async findAllQuestionsForTypes() {
     const questions = await QuestionSchema.findAll({
       include: [
+        {
+          model: BookSchema,
+        },
         {
           model: QuestionTypeSchema,
 

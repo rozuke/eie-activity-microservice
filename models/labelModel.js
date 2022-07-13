@@ -2,7 +2,7 @@ const { sequelize } = require("../sequelize");
 const { DataTypes } = require("sequelize");
 
 const LabelSchema = sequelize.define(
-  "etiqueta",
+  "etiquetas",
   {
     etiquetaId: {
       allowNull: false,

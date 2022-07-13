@@ -2,7 +2,7 @@ const { sequelize } = require("../sequelize");
 const { DataTypes } = require("sequelize");
 
 const BookSchema = sequelize.define(
-  "Libro",
+  "libro",
   {
     libroId: {
       allowNull: false,
@@ -18,6 +18,7 @@ const BookSchema = sequelize.define(
   {
     timestamps: false,
     freezeTableName: true,
+    tableName: "Libro",
   }
 );
 
