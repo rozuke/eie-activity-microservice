@@ -19,7 +19,7 @@ const ForumActivitySchema = sequelize.define(
     },
     cursoId: {
       type: DataTypes.INTEGER,
-      field: "curso_id",
+      field: "acf_curso_id",
     },
   },
   {

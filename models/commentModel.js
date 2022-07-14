@@ -16,11 +16,11 @@ const CommentSchema = sequelize.define(
     },
     actividadId: {
       type: DataTypes.INTEGER,
-      field: "actividad_foro_id",
+      field: "com_actividad_foro_id",
     },
     usuarioId: {
       type: DataTypes.INTEGER,
-      field: "usuario_id",
+      field: "com_usuario_id",
     },
   },
   {

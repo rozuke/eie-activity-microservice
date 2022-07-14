@@ -43,7 +43,7 @@ class QuestionService {
       include: [
         {
           model: CommentSchema,
-          attributes: ["contenido", "usuario_id"],
+          attributes: ["contenido", "usuarioId"],
         },
       ],
     });

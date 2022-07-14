@@ -9,7 +9,7 @@ const LabelTypeSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
-      field: "tipo_etq_id",
+      field: "tipo_etiqueta_id",
     },
     nombre: {
       type: DataTypes.STRING,

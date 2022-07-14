@@ -22,12 +22,12 @@ const LabelSchema = sequelize.define(
     },
     preguntaId: {
       type: DataTypes.INTEGER,
-      field: "pregunta_fk",
+      field: "eti_pregunta_id",
     },
 
     tipoEtiquetaId: {
       type: DataTypes.INTEGER,
-      field: "tipo_etq_fk",
+      field: "eti_tipo_etq_id",
     },
   },
   {

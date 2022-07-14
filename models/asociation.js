@@ -9,14 +9,14 @@ const { ForumActivitySchema } = require("./forumActivityModel.js");
 // Question asociations
 QuestionTypeSchema.hasOne(QuestionSchema, {
   foreignKey: {
-    field: "tipo_fk",
+    field: "pre_tipo_id",
   },
 });
 QuestionSchema.belongsTo(QuestionTypeSchema);
 
 BookSchema.hasOne(QuestionSchema, {
   foreignKey: {
-    field: "libro_fk",
+    field: "pre_libro_id",
   },
 });
 QuestionSchema.belongsTo(BookSchema);
@@ -24,7 +24,7 @@ QuestionSchema.belongsTo(BookSchema);
 // Attached asociations
 QuestionSchema.hasMany(AttachedSchema, {
   foreignKey: {
-    field: "pregunta_fk",
+    field: "adj_pregunta_id",
   },
 });
 AttachedSchema.belongsTo(QuestionSchema);
@@ -32,7 +32,7 @@ AttachedSchema.belongsTo(QuestionSchema);
 // Label asociations
 QuestionSchema.hasMany(LabelSchema, {
   foreignKey: {
-    field: "pregunta_fk",
+    field: "eti_pregunta_id",
   },
 });
 LabelSchema.belongsTo(QuestionSchema);
@@ -40,7 +40,7 @@ LabelSchema.belongsTo(QuestionSchema);
 // Comments associations
 ForumActivitySchema.hasMany(CommentSchema, {
   foreignKey: {
-    field: "actividad_foro_id",
+    field: "com_actividad_foro_id",
   },
 });
 CommentSchema.belongsTo(ForumActivitySchema);

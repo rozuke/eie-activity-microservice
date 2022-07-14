@@ -14,6 +14,9 @@ const BookSchema = sequelize.define(
     nombre: {
       type: DataTypes.STRING,
     },
+    nivel: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: false,

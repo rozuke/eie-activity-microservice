@@ -26,7 +26,7 @@ const AttachedSchema = sequelize.define(
     },
     preguntaId: {
       type: DataTypes.INTEGER,
-      field: "pregunta_fk",
+      field: "adj_pregunta_id",
     },
   },
   {

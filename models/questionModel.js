@@ -19,14 +19,14 @@ const QuestionSchema = sequelize.define(
     orden: {
       type: DataTypes.INTEGER,
     },
-    // libroId: {
-    //   type: DataTypes.INTEGER,
-    //   field: "libro_fk",
-    // },
-    // tipoId: {
-    //   type: DataTypes.INTEGER,
-    //   field: "tipo_fk",
-    // },
+    libroId: {
+      type: DataTypes.INTEGER,
+      field: "pre_libro_id",
+    },
+    tipoId: {
+      type: DataTypes.INTEGER,
+      field: "pre_tipo_id",
+    },
   },
   {
     timestamps: false,
