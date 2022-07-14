@@ -4,7 +4,7 @@ const { BookSchema } = require("./bookModel.js");
 const { QuestionTypeSchema } = require("./questionTypeModel.js");
 
 const QuestionSchema = sequelize.define(
-  "Pregunta",
+  "preguntas",
   {
     preguntaId: {
       allowNull: false,
@@ -31,9 +31,8 @@ const QuestionSchema = sequelize.define(
   {
     timestamps: false,
     freezeTableName: true,
+    tableName: "Pregunta",
   }
 );
-
-// Question asociations
 
 module.exports = { QuestionSchema };

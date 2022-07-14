@@ -6,6 +6,10 @@ const { BookSchema } = require("./bookModel.js");
 const { LabelTypeSchema } = require("./labelTypeModel.js");
 const { CommentSchema } = require("./commentModel.js");
 const { ForumActivitySchema } = require("./forumActivityModel.js");
+const { CourseSchema } = require("./courseModel.js");
+const { LessonSchema } = require("./lessonModel.js");
+const { ParticipationSchema } = require("./participationModel.js");
+
 // Question asociations
 QuestionTypeSchema.hasOne(QuestionSchema, {
   foreignKey: {
@@ -44,3 +48,27 @@ ForumActivitySchema.hasMany(CommentSchema, {
   },
 });
 CommentSchema.belongsTo(ForumActivitySchema);
+
+// Course asociations
+CourseSchema.hasMany(ForumActivitySchema, {
+  foreignKey: {
+    field: "acf_curso_id",
+  },
+});
+ForumActivitySchema.belongsTo(CourseSchema);
+
+// Book asociations
+BookSchema.hasMany(LessonSchema, {
+  foreignKey: {
+    field: "lec_libro_id",
+  },
+});
+LessonSchema.belongsTo(BookSchema);
+
+// Participant asociations
+QuestionSchema.hasMany(ParticipationSchema, {
+  foreignKey: {
+    field: "par_pregunta_id",
+  },
+});
+ParticipationSchema.belongsTo(QuestionSchema);

@@ -65,9 +65,44 @@ functions:
   #         method: post
 
   # questions function
-  getQuestions:
-    handler: ./router/questionRouter.getAllQuestions
+  getAllQuestions:
+    handler: ./router/activityMobileRouter.getAllQuestions
     events:
       - httpApi:
-          path: /questions
+          path: /api/preguntas
+          method: get
+
+  getTopicCourse:
+    handler: ./router/activityMobileRouter.getAllForumTopics
+    events:
+      - httpApi:
+          path: /api/curso/{cursoId}/foro
+          method: get
+
+  getCommentsForum:
+    handler: ./router/activityMobileRouter.getAllCommentsForForum
+    events:
+      - httpApi:
+          path: /api/curso/{cursoId}/foro/{foroId}/comentarios
+          method: get
+
+  getStudentNote:
+    handler: ./router/activityMobileRouter.getStudentNote
+    events:
+      - httpApi:
+          path: /api/usuario/{usuarioId}/nota
+          method: get
+
+  getLessonsForBook:
+    handler: ./router/activityMobileRouter.getLessonForBook
+    events:
+      - httpApi:
+          path: /api/lecciones
+          method: get
+
+  getStudentPaticipation:
+    handler: ./router/activityMobileRouter.getStudentParticipation
+    events:
+      - httpApi:
+          path: /api/usuario/{usuarioId}/participacion
           method: get
