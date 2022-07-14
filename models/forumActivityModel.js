@@ -1,25 +1,21 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../sequelize");
 
-const ActivitySchema = sequelize.define(
-  "Actividades",
+const ForumActivitySchema = sequelize.define(
+  "foroActividad",
   {
     actividadId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
-      field: "actividad_id",
+      field: "actividad_foro_id",
     },
-    nombre: {
+    topico: {
       type: DataTypes.STRING,
     },
     descripcion: {
       type: DataTypes.STRING,
-    },
-    tipoActividadId: {
-      type: DataTypes.INTEGER,
-      field: "tipoActividad_id",
     },
     cursoId: {
       type: DataTypes.INTEGER,
@@ -28,7 +24,9 @@ const ActivitySchema = sequelize.define(
   },
   {
     timestamps: false,
+    freezeTableName: true,
+    tableName: "ActividadForo",
   }
 );
 
-module.exports = { ActivitySchema };
+module.exports = { ForumActivitySchema };

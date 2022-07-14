@@ -2,7 +2,7 @@ const { sequelize } = require("../sequelize");
 const { DataTypes } = require("sequelize");
 
 const CommentSchema = sequelize.define(
-  "Comentarios",
+  "comentario",
   {
     comentarioId: {
       allowNull: false,
@@ -12,11 +12,11 @@ const CommentSchema = sequelize.define(
       field: "comentario_id",
     },
     contenido: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     actividadId: {
       type: DataTypes.INTEGER,
-      field: "actividad_id",
+      field: "actividad_foro_id",
     },
     usuarioId: {
       type: DataTypes.INTEGER,
@@ -25,6 +25,8 @@ const CommentSchema = sequelize.define(
   },
   {
     timestamps: false,
+    freezeTableName: true,
+    tableName: "Comentario",
   }
 );
 

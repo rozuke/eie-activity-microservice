@@ -5,7 +5,7 @@ const getAllQuestions = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
-    const questions = await service.findAllQuestionsForTypes();
+    const questions = await service.findAllCommentsForForumActivity();
     if (questions !== null) {
       callback(null, questions);
     }

@@ -3,6 +3,8 @@ const { AttachedSchema } = require("../models/attachedModel.js");
 const { LabelSchema } = require("../models/labelModel.js");
 const { QuestionTypeSchema } = require("../models/questionTypeModel.js");
 const { BookSchema } = require("../models/bookModel.js");
+const { ForumActivitySchema } = require("../models/forumActivityModel.js");
+const { CommentSchema } = require("../models/commentModel.js");
 require("../models/asociation.js");
 class QuestionService {
   async findAllQuestions() {
@@ -34,6 +36,19 @@ class QuestionService {
       attributes: ["preguntaId", "enunciado", "orden"],
     });
     return questions;
+  }
+
+  async findAllCommentsForForumActivity() {
+    const comments = await ForumActivitySchema.findAll({
+      include: [
+        {
+          model: CommentSchema,
+          attributes: ["contenido", "usuario_id"],
+        },
+      ],
+    });
+
+    return comments;
   }
 
   async findAllAttacheds() {

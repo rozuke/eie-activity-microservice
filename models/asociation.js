@@ -3,7 +3,9 @@ const { AttachedSchema } = require("./attachedModel.js");
 const { LabelSchema } = require("./labelModel.js");
 const { QuestionTypeSchema } = require("./questionTypeModel.js");
 const { BookSchema } = require("./bookModel.js");
-
+const { LabelTypeSchema } = require("./labelTypeModel.js");
+const { CommentSchema } = require("./commentModel.js");
+const { ForumActivitySchema } = require("./forumActivityModel.js");
 // Question asociations
 QuestionTypeSchema.hasOne(QuestionSchema, {
   foreignKey: {
@@ -34,3 +36,11 @@ QuestionSchema.hasMany(LabelSchema, {
   },
 });
 LabelSchema.belongsTo(QuestionSchema);
+
+// Comments associations
+ForumActivitySchema.hasMany(CommentSchema, {
+  foreignKey: {
+    field: "actividad_foro_id",
+  },
+});
+CommentSchema.belongsTo(ForumActivitySchema);
