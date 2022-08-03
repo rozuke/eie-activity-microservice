@@ -10,7 +10,7 @@ const { ResultSchema } = require("../models/resultModel.js");
 const { LessonSchema } = require("../models/lessonModel.js");
 const { ParticipationSchema } = require("../models/participationModel.js");
 require("../models/asociation.js");
-class QuestionService {
+class ActivityMobileService {
   // Find Functions
   async findTest() {
     const questions = await QuestionSchema.findAll();
@@ -47,35 +47,6 @@ class QuestionService {
       attributes: ["preguntaId", "enunciado", "orden"],
     });
     return questions;
-  }
-
-  async findAllTopicForCourse(id) {
-    const topics = await ForumActivitySchema.findAll({
-      where: {
-        cursoId: id,
-      },
-      attributes: ["topico", "descripcion", "cursoId"],
-    });
-
-    return topics === null ? null : topics;
-  }
-
-  async findAllCommentsForForum(cursoId, foroId) {
-    const comments = await ForumActivitySchema.findAll({
-      where: {
-        actividadId: foroId,
-        cursoId: cursoId,
-      },
-      include: [
-        {
-          model: CommentSchema,
-          attributes: ["contenido", "usuarioId"],
-        },
-      ],
-      attributes: ["actividadId", "cursoId", "topico", "descripcion"],
-    });
-
-    return comments;
   }
 
   async findStudentNotes(id) {
@@ -134,6 +105,64 @@ class QuestionService {
     });
     return studentParticipations;
   }
+
+  // Create Functions
+
+  // async createNewForumTopic(cursoId, newForo) {
+  //   const course = await CourseSchema.findAll({
+  //     where: {
+  //       cursoId: cursoId,
+  //     },
+  //   });
+  //   if (newForumTopic === null) {
+  //     throw new Error("Course not found");
+  //   } else {
+  //     const topic = await ForumActivitySchema.create(newForo);
+  //     return topic;
+  //   }
+  // }
+
+  async createNewComment(cursoId, foroId, newComment) {
+    const course = await CourseSchema.findOne({
+      where: {
+        cursoId: cursoId,
+      },
+    });
+    const forum = await ForumActivitySchema.findOne({
+      where: {
+        actividadId: foroId,
+      },
+    });
+
+    if (course !== null && forum !== null) {
+      const comment = await CommentSchema.create(newComment);
+      return comment;
+    }
+  }
+
+  async createNewResult(newResult) {
+    const result = await ResultSchema.create(newResult);
+    return result;
+  }
+
+  async createNewParticipation(newParticipation) {
+    const participation = await ParticipationSchema.create(newParticipation);
+    return participation;
+  }
+
+  // Update Functions
+
+  async updateStudentResult(id, newNote) {
+    const result = await ResultSchema.findOne({
+      where: {
+        resultadoId: id,
+      },
+    });
+    if (result !== null) {
+      const newResult = result.update(newNote);
+      return newResult;
+    }
+  }
 }
 
-module.exports = { QuestionService };
+module.exports = { ActivityMobileService };

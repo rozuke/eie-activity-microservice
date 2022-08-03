@@ -21,12 +21,20 @@ const CommentSchema = sequelize.define(
     usuarioId: {
       type: DataTypes.INTEGER,
       field: "com_usuario_id",
+      references: {
+        model: "usuario",
+        key: "usuario_id",
+      },
     },
   },
   {
     timestamps: false,
     freezeTableName: true,
     tableName: "Comentario",
+    name: {
+      singular: "comentario",
+      plural: "comentarios",
+    },
   }
 );
 

@@ -21,6 +21,14 @@ const ForumActivitySchema = sequelize.define(
       type: DataTypes.INTEGER,
       field: "acf_curso_id",
     },
+    tipo: {
+      type: DataTypes.INTEGER,
+      field: "acf_tipo_act_id",
+    },
+    fecha: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     timestamps: false,
