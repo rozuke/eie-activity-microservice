@@ -9,8 +9,9 @@ const { CourseSchema } = require("../models/courseModel.js");
 const { ResultSchema } = require("../models/resultModel.js");
 const { LessonSchema } = require("../models/lessonModel.js");
 const { ParticipationSchema } = require("../models/participationModel.js");
+const { Sequelize } = require("sequelize");
 require("../models/asociation.js");
-class QuestionService {
+class ActivityMobileService {
   // Find Functions
   async findTest() {
     const questions = await QuestionSchema.findAll();
@@ -49,41 +50,13 @@ class QuestionService {
     return questions;
   }
 
-  async findAllTopicForCourse(id) {
-    const topics = await ForumActivitySchema.findAll({
-      where: {
-        cursoId: id,
-      },
-      attributes: ["topico", "descripcion", "cursoId"],
-    });
-
-    return topics === null ? null : topics;
-  }
-
-  async findAllCommentsForForum(cursoId, foroId) {
-    const comments = await ForumActivitySchema.findAll({
-      where: {
-        actividadId: foroId,
-        cursoId: cursoId,
-      },
-      include: [
-        {
-          model: CommentSchema,
-          attributes: ["contenido", "usuarioId"],
-        },
-      ],
-      attributes: ["actividadId", "cursoId", "topico", "descripcion"],
-    });
-
-    return comments;
-  }
-
   async findStudentNotes(id) {
-    const studentNote = await ResultSchema.findAll({
+    const studentNote = await ResultSchema.findOne({
       where: {
         usuarioId: id,
       },
       attributes: [
+        "resultadoId",
         "usuarioId",
         "resultadoId",
         "notaHomework",
@@ -134,6 +107,120 @@ class QuestionService {
     });
     return studentParticipations;
   }
+
+  // Create Functions
+
+  // async createNewForumTopic(cursoId, newForo) {
+  //   const course = await CourseSchema.findAll({
+  //     where: {
+  //       cursoId: cursoId,
+  //     },
+  //   });
+  //   if (newForumTopic === null) {
+  //     throw new Error("Course not found");
+  //   } else {
+  //     const topic = await ForumActivitySchema.create(newForo);
+  //     return topic;
+  //   }
+  // }
+
+  async createNewComment(cursoId, foroId, newComment) {
+    const course = await CourseSchema.findOne({
+      where: {
+        cursoId: cursoId,
+      },
+    });
+    const forum = await ForumActivitySchema.findOne({
+      where: {
+        actividadId: foroId,
+      },
+    });
+
+    if (course !== null && forum !== null) {
+      const comment = await CommentSchema.create(newComment);
+      return comment;
+    }
+  }
+
+  async createNewResult(newResult) {
+    const result = await ResultSchema.create(newResult);
+    return result;
+  }
+
+  async createNewParticipation(newParticipation) {
+    const participation = await ParticipationSchema.create(newParticipation);
+    return participation;
+  }
+
+  // Update Functions
+
+  async updateStudentResult(id) {
+    const result = await ResultSchema.findOne({
+      where: {
+        usuarioId: id,
+      },
+    });
+    const notaHomework = await this.getAverageGrade(id, 1);
+    const notaEE = await this.getAverageGrade(id, 2);
+    const notaLaboratory = await this.getAverageGrade(id, 3);
+    const cantidadParticipacion = await this.countParticipation(id);
+
+    const formatData = {
+      notaHomework,
+      notaEE,
+      notaLaboratory,
+      cantidadParticipacion,
+      valoracionId: 1,
+      usuarioId: id,
+    };
+    return await result.update(formatData);
+  }
+
+  async getAverageGrade(userId, questionType) {
+    const response = await ParticipationSchema.findOne({
+      where: {
+        usuarioId: userId,
+      },
+      include: [
+        {
+          model: QuestionSchema,
+          where: {
+            tipoId: questionType,
+          },
+          attributes: [],
+        },
+      ],
+      raw: true,
+      attributes: [
+        [
+          Sequelize.fn(
+            "SUM",
+            Sequelize.cast(Sequelize.col("puntuacion"), "integer")
+          ),
+          "note",
+        ],
+        [Sequelize.fn("COUNT", Sequelize.col("puntuacion")), "count"],
+      ],
+    });
+
+    const parsed = parseInt(
+      this.formatAverageGrade(response.note, response.count)
+    );
+    return parsed;
+  }
+
+  async countParticipation(userId) {
+    const response = await ParticipationSchema.count({
+      where: {
+        usuarioId: userId,
+      },
+    });
+    return parseInt(response);
+  }
+
+  formatAverageGrade(correct, total) {
+    return (correct / (total * 20)) * 100;
+  }
 }
 
-module.exports = { QuestionService };
+module.exports = { ActivityMobileService };

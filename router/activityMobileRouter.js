@@ -1,5 +1,5 @@
-const { QuestionService } = require("../service/activityMobileService");
-const service = new QuestionService();
+const { ActivityMobileService } = require("../service/activityMobileService");
+const service = new ActivityMobileService();
 
 // GET Functions
 const getAllQuestions = async (event, context, callback) => {
@@ -15,40 +15,12 @@ const getAllQuestions = async (event, context, callback) => {
   }
 };
 
-const getAllForumTopics = async (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  try {
-    const { cursoId } = event.pathParameters;
-    console.log(cursoId);
-    const topics = await service.findAllTopicForCourse(cursoId);
-    if (topics !== null) {
-      callback(null, topics);
-    }
-  } catch (error) {}
-  callback(error);
-};
-
-const getAllCommentsForForum = async (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  try {
-    const { cursoId, foroId } = event.pathParameters;
-    const comments = await service.findAllCommentsForForum(cursoId, foroId);
-    if (comments !== null) {
-      callback(null, comments);
-    }
-  } catch (error) {
-    callback(error);
-  }
-};
-
 const getStudentNote = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
-    const { usuarioId } = event.pathParameters;
-    const note = await service.findStudentNotes(usuarioId);
+    const { userId } = event.pathParameters;
+    const note = await service.findStudentNotes(userId);
     if (note !== null) {
       callback(null, note);
     }
@@ -82,11 +54,98 @@ const getStudentParticipation = async (event, context, callback) => {
   }
 };
 
+// Post Functions
+const postNewComment = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    const { courseId, forumId } = event.pathParameters;
+    const { contenido, usuarioId, actividadId } = JSON.parse(event.body);
+    const newComment = { contenido, usuarioId, actividadId };
+    const comment = await service.createNewComment(
+      courseId,
+      forumId,
+      newComment
+    );
+    callback(null, comment);
+  } catch (error) {
+    callback(error);
+  }
+};
+
+const postNewResult = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    const {
+      notaHomework,
+      notaEE,
+      notaLaboratory,
+      cantidadParticipacion,
+      usuarioId,
+      valoracionId,
+    } = JSON.parse(event.body);
+    const newResult = {
+      notaHomework,
+      notaEE,
+      notaLaboratory,
+      cantidadParticipacion,
+      usuarioId,
+      valoracionId,
+    };
+    const result = await service.createNewResult(newResult);
+    if (result !== null) {
+      callback(null, result);
+    }
+  } catch (error) {
+    callback(error);
+  }
+};
+
+const postNewParticipation = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    const { puntuacion, usuarioId, preguntaId, valoracionId } = JSON.parse(
+      event.body
+    );
+    const newParticipation = {
+      puntuacion,
+      usuarioId,
+      preguntaId,
+      valoracionId,
+    };
+    const participation = await service.createNewParticipation(
+      newParticipation
+    );
+    if (participation !== null) {
+      callback(null, participation);
+    }
+  } catch (error) {
+    callback(error);
+  }
+};
+
+// Put Functions
+
+const putStudentResult = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    const { userId } = event.pathParameters;
+    console.log(userId);
+    const result = await service.updateStudentResult(userId);
+    if (result !== null) {
+      callback(null, result);
+    }
+  } catch (error) {
+    callback(error);
+  }
+};
+
 module.exports = {
   getAllQuestions,
-  getAllForumTopics,
-  getAllCommentsForForum,
   getStudentNote,
   getLessonForBook,
   getStudentParticipation,
+  postNewComment,
+  postNewResult,
+  postNewParticipation,
+  putStudentResult,
 };

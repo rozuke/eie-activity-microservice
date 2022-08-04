@@ -9,6 +9,11 @@ const { ForumActivitySchema } = require("./forumActivityModel.js");
 const { CourseSchema } = require("./courseModel.js");
 const { LessonSchema } = require("./lessonModel.js");
 const { ParticipationSchema } = require("./participationModel.js");
+const { UserSchema } = require("./userModel.js");
+const { UserCourseSchema } = require("./userCourseModel.js");
+const { ResultSchema } = require("./resultModel.js");
+const { PersonSchema } = require("./personModel.js");
+const { ActivityTypeSchema } = require("./activityTypeModel.js");
 
 // Question asociations
 QuestionTypeSchema.hasOne(QuestionSchema, {
@@ -65,6 +70,13 @@ BookSchema.hasMany(LessonSchema, {
 });
 LessonSchema.belongsTo(BookSchema);
 
+BookSchema.hasMany(CourseSchema, {
+  foreignKey: {
+    field: "cur_libro_id",
+  },
+});
+CourseSchema.belongsTo(BookSchema);
+
 // Participant asociations
 QuestionSchema.hasMany(ParticipationSchema, {
   foreignKey: {
@@ -72,3 +84,54 @@ QuestionSchema.hasMany(ParticipationSchema, {
   },
 });
 ParticipationSchema.belongsTo(QuestionSchema);
+
+// User asociations
+UserSchema.belongsToMany(CourseSchema, {
+  through: UserCourseSchema,
+  foreignKey: "curso_id",
+});
+CourseSchema.belongsToMany(UserSchema, {
+  through: UserCourseSchema,
+  foreignKey: "usuario_id",
+});
+UserSchema.hasMany(UserCourseSchema, {
+  foreignKey: {
+    field: "usuario_id",
+  },
+});
+UserCourseSchema.belongsTo(UserSchema);
+
+CourseSchema.hasMany(UserCourseSchema, {
+  foreignKey: {
+    field: "curso_id",
+  },
+});
+UserCourseSchema.belongsTo(CourseSchema);
+
+UserSchema.hasOne(ResultSchema, {
+  foreignKey: {
+    field: "res_usuario_id",
+  },
+});
+ResultSchema.belongsTo(UserSchema);
+
+PersonSchema.hasOne(UserSchema, {
+  foreignKey: {
+    field: "usu_persona_id",
+  },
+});
+UserSchema.belongsTo(PersonSchema);
+
+UserSchema.hasMany(CommentSchema, {
+  foreignKey: {
+    field: "com_usuario_id",
+  },
+});
+CommentSchema.belongsTo(UserSchema);
+// activity asociations
+ActivityTypeSchema.hasMany(ForumActivitySchema, {
+  foreignKey: {
+    field: "acf_tipo_act_id",
+  },
+});
+ForumActivitySchema.belongsTo(ActivityTypeSchema);
