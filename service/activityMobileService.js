@@ -9,6 +9,7 @@ const { CourseSchema } = require("../models/courseModel.js");
 const { ResultSchema } = require("../models/resultModel.js");
 const { LessonSchema } = require("../models/lessonModel.js");
 const { ParticipationSchema } = require("../models/participationModel.js");
+const { Sequelize } = require("sequelize");
 require("../models/asociation.js");
 class ActivityMobileService {
   // Find Functions
@@ -50,11 +51,12 @@ class ActivityMobileService {
   }
 
   async findStudentNotes(id) {
-    const studentNote = await ResultSchema.findAll({
+    const studentNote = await ResultSchema.findOne({
       where: {
         usuarioId: id,
       },
       attributes: [
+        "resultadoId",
         "usuarioId",
         "resultadoId",
         "notaHomework",
@@ -152,16 +154,72 @@ class ActivityMobileService {
 
   // Update Functions
 
-  async updateStudentResult(id, newNote) {
+  async updateStudentResult(id) {
     const result = await ResultSchema.findOne({
       where: {
-        resultadoId: id,
+        usuarioId: id,
       },
     });
-    if (result !== null) {
-      const newResult = result.update(newNote);
-      return newResult;
-    }
+    const notaHomework = await this.getAverageGrade(id, 1);
+    const notaEE = await this.getAverageGrade(id, 2);
+    const notaLaboratory = await this.getAverageGrade(id, 3);
+    const cantidadParticipacion = await this.countParticipation(id);
+
+    const formatData = {
+      notaHomework,
+      notaEE,
+      notaLaboratory,
+      cantidadParticipacion,
+      valoracionId: 1,
+      usuarioId: id,
+    };
+    return await result.update(formatData);
+  }
+
+  async getAverageGrade(userId, questionType) {
+    const response = await ParticipationSchema.findOne({
+      where: {
+        usuarioId: userId,
+      },
+      include: [
+        {
+          model: QuestionSchema,
+          where: {
+            tipoId: questionType,
+          },
+          attributes: [],
+        },
+      ],
+      raw: true,
+      attributes: [
+        [
+          Sequelize.fn(
+            "SUM",
+            Sequelize.cast(Sequelize.col("puntuacion"), "integer")
+          ),
+          "note",
+        ],
+        [Sequelize.fn("COUNT", Sequelize.col("puntuacion")), "count"],
+      ],
+    });
+
+    const parsed = parseInt(
+      this.formatAverageGrade(response.note, response.count)
+    );
+    return parsed;
+  }
+
+  async countParticipation(userId) {
+    const response = await ParticipationSchema.count({
+      where: {
+        usuarioId: userId,
+      },
+    });
+    return parseInt(response);
+  }
+
+  formatAverageGrade(correct, total) {
+    return (correct / (total * 20)) * 100;
   }
 }
 

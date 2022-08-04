@@ -19,8 +19,8 @@ const getStudentNote = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
-    const { usuarioId } = event.pathParameters;
-    const note = await service.findStudentNotes(usuarioId);
+    const { userId } = event.pathParameters;
+    const note = await service.findStudentNotes(userId);
     if (note !== null) {
       callback(null, note);
     }
@@ -58,10 +58,14 @@ const getStudentParticipation = async (event, context, callback) => {
 const postNewComment = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
-    const { cursoId, foroId } = event.pathParameters;
+    const { courseId, forumId } = event.pathParameters;
     const { contenido, usuarioId, actividadId } = JSON.parse(event.body);
     const newComment = { contenido, usuarioId, actividadId };
-    const comment = await service.createNewComment(cursoId, foroId, newComment);
+    const comment = await service.createNewComment(
+      courseId,
+      forumId,
+      newComment
+    );
     callback(null, comment);
   } catch (error) {
     callback(error);
@@ -124,25 +128,19 @@ const postNewParticipation = async (event, context, callback) => {
 const putStudentResult = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
-    const { resultadoId } = event.pathParameters;
-    const { notaHomework, notaEE, notaLaboratory, cantidadParticipacion } =
-      JSON.parse(event.body);
-    const newResult = {
-      notaHomework,
-      notaEE,
-      notaLaboratory,
-      cantidadParticipacion,
-    };
-    const result = await service.updateStudentResult(resultadoId, newResult);
+    const { userId } = event.pathParameters;
+    console.log(userId);
+    const result = await service.updateStudentResult(userId);
     if (result !== null) {
       callback(null, result);
     }
-  } catch (error) {}
+  } catch (error) {
+    callback(error);
+  }
 };
 
 module.exports = {
   getAllQuestions,
-  getAllCommentsForForum,
   getStudentNote,
   getLessonForBook,
   getStudentParticipation,

@@ -48,6 +48,41 @@ functions:
       - httpApi:
           path: /api/course/{courseId}/foro/{forumId}/comments
           method: get
+  # Mobile functions
+  postNewComment:
+    handler: ./router/activityMobileRouter.postNewComment
+    events:
+      - httpApi:
+          path: /api/course/{courseId}/forum/{forumId}/comment
+          method: post
+
+  postNewParticipation:
+    handler: ./router/activityMobileRouter.postNewParticipation
+    events:
+      - httpApi:
+          path: /api/activity/user/student/participation
+          method: post
+
+  getStudentNote:
+    handler: ./router/activityMobileRouter.getStudentNote
+    events:
+      - httpApi:
+          path: /api/activity/user/{userId}/result
+          method: get
+
+  postNewResult:
+    handler: ./router/activityMobileRouter.postNewResult
+    events:
+      - httpApi:
+          path: /api/activity/user/result
+          method: post
+
+  putStudentResult:
+    handler: ./router/activityMobileRouter.putStudentResult
+    events:
+      - httpApi:
+          path: /api/activity/user/{userId}/result
+          method: put
 
   # getAllCourses:
   #   handler: ./router/activityWebRouter.getAllCourses
@@ -92,25 +127,12 @@ functions:
   #         path: /api/usuario/{usuarioId}/participacion
   #         method: get
   # # post methods
-  # postNewComment:
-  #   handler: ./router/activityMobileRouter.postNewComment
-  #   events:
-  #     - httpApi:
-  #         path: /api/curso/{cursoId}/foro/{foroId}/comentarios
-  #         method: post
 
   # postNewResult:
   #   handler: ./router/activityMobileRouter.postNewResult
   #   events:
   #     - httpApi:
   #         path: /api/usuario/resultados
-  #         method: post
-
-  # postNewParticipation:
-  #   handler: ./router/activityMobileRouter.postNewParticipation
-  #   events:
-  #     - httpApi:
-  #         path: /api/usuario/participacion
   #         method: post
 
   # putStudentResult:

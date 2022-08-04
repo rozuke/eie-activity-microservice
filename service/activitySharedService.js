@@ -37,7 +37,19 @@ class ActivitySharedService {
         cursoId: courseId,
       },
       raw: true,
-      attributes: ["actividadId", "topico", "descripcion", "fecha"],
+      include: [
+        {
+          model: ActivityTypeSchema,
+          attributes: [],
+        },
+      ],
+      attributes: [
+        "actividadId",
+        "topico",
+        "descripcion",
+        [Sequelize.col("tipoActividad.nombre"), "tipo"],
+        "fecha",
+      ],
     });
 
     const comentarios = await this.findAllComments(forumId);
